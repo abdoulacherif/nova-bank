@@ -14,204 +14,582 @@
 
         body {
             min-height: 100vh;
-            background: linear-gradient(135deg, #0b2440 0%, #1e3f6e 100%);
+            background: linear-gradient(145deg, #0a1e33 0%, #1a3a5f 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
+            position: relative;
+        }
+
+        /* Élément décoratif léger */
+        body::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            right: -20%;
+            width: 70%;
+            height: 70%;
+            background: radial-gradient(circle, rgba(255, 107, 74, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
         }
 
         .container {
-            max-width: 500px;
+            max-width: 480px;
             width: 100%;
             background: white;
-            border-radius: 40px;
-            box-shadow: 0 30px 60px -15px rgba(0,0,0,0.3);
+            border-radius: 48px;
+            box-shadow: 0 30px 60px -20px rgba(0, 20, 40, 0.4);
             overflow: hidden;
-            animation: slideUp 0.6s ease;
+            position: relative;
+            z-index: 2;
+            animation: appear 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes appear {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
+        /* En-tête */
         .header {
             background: #0b2440;
-            padding: 40px 30px;
+            padding: 36px 28px 28px;
             text-align: center;
             border-bottom: 4px solid #ff6b4a;
+            position: relative;
         }
 
         .logo {
-            font-size: 2.5rem;
+            font-size: 2.6rem;
             font-weight: 800;
             color: white;
+            letter-spacing: 2px;
+            line-height: 1.2;
+            margin-bottom: 8px;
         }
 
         .logo span {
             color: #ff6b4a;
+            font-weight: 900;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 0 8px;
+            border-radius: 16px;
         }
 
-        .form-section {
-            padding: 40px 30px;
+        .tagline {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
+            font-weight: 400;
+            letter-spacing: 0.5px;
         }
 
-        h2 {
-            color: #0b2440;
-            margin-bottom: 10px;
+        /* Contenu formulaire */
+        .form-content {
+            padding: 40px 32px 48px;
+        }
+
+        .title {
             font-size: 2rem;
+            font-weight: 700;
+            color: #0b2440;
+            margin-bottom: 8px;
         }
 
         .subtitle {
-            color: #6a7b8c;
-            margin-bottom: 30px;
+            color: #5f738c;
+            font-size: 1rem;
+            margin-bottom: 32px;
+            padding-left: 16px;
             border-left: 4px solid #ff6b4a;
-            padding-left: 15px;
+            line-height: 1.5;
         }
 
+        /* Champs de formulaire */
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         .form-group label {
             display: block;
             margin-bottom: 8px;
-            color: #0b2440;
+            color: #1e3f6e;
             font-weight: 600;
-            margin-left: 5px;
+            font-size: 0.95rem;
+            padding-left: 8px;
         }
 
         .form-group input {
             width: 100%;
-            padding: 15px 20px;
-            border: 2px solid #e2e8f0;
-            border-radius: 30px;
+            padding: 16px 22px;
+            background: #ffffff;
+            border: 2px solid #e2eaf2;
+            border-radius: 34px;
             font-size: 1rem;
-            transition: all 0.3s;
+            color: #0b2440;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            outline: none;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+        }
+
+        .form-group input:hover {
+            border-color: #b8cfec;
+            background: #fcfdff;
         }
 
         .form-group input:focus {
-            outline: none;
             border-color: #ff6b4a;
-            box-shadow: 0 5px 15px rgba(255,107,74,0.2);
+            box-shadow: 0 0 0 4px rgba(255, 107, 74, 0.15);
+            background: #ffffff;
         }
 
+        .form-group input::placeholder {
+            color: #9fb0c7;
+            font-weight: 400;
+            opacity: 0.8;
+        }
+
+        /* Indicateur de force du mot de passe */
+        .password-strength {
+            margin-top: 10px;
+            height: 6px;
+            background: #e2eaf2;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .strength-bar {
+            height: 100%;
+            width: 0;
+            transition: width 0.3s ease, background 0.3s ease;
+            border-radius: 3px;
+        }
+
+        .strength-text {
+            font-size: 0.8rem;
+            margin-top: 6px;
+            text-align: right;
+            font-weight: 600;
+        }
+
+        /* Bouton principal */
         .btn-submit {
             width: 100%;
-            padding: 16px;
-            background: #0b2440;
+            padding: 18px 24px;
+            background: linear-gradient(145deg, #0b2440, #1a3a5f);
             color: white;
             border: none;
             border-radius: 40px;
-            font-size: 1.1rem;
-            font-weight: 600;
+            font-size: 1.15rem;
+            font-weight: 700;
             cursor: pointer;
-            margin-top: 20px;
-            transition: all 0.3s;
+            transition: all 0.25s ease;
+            margin-top: 16px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 20px -8px rgba(11, 36, 64, 0.4);
+            letter-spacing: 0.5px;
         }
 
         .btn-submit:hover {
-            background: #1e3f6e;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(11,36,64,0.3);
+            background: linear-gradient(145deg, #0d2947, #1d416b);
+            transform: translateY(-2px);
+            box-shadow: 0 16px 24px -8px rgba(11, 36, 64, 0.5);
         }
 
+        .btn-submit:active {
+            transform: translateY(1px);
+            box-shadow: 0 8px 12px -6px rgba(11, 36, 64, 0.4);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Lien vers connexion */
         .login-link {
             text-align: center;
-            margin-top: 25px;
+            color: #5f738c;
+            font-size: 0.95rem;
         }
 
         .login-link a {
             color: #ff6b4a;
             text-decoration: none;
-            font-weight: 600;
+            font-weight: 700;
+            margin-left: 6px;
+            transition: color 0.2s ease;
+            border-bottom: 2px solid transparent;
         }
 
+        .login-link a:hover {
+            color: #ff8a5c;
+            border-bottom-color: #ff8a5c;
+        }
+
+        /* Alertes */
         .alert {
-            padding: 15px;
-            border-radius: 30px;
-            margin-bottom: 20px;
+            padding: 16px 22px;
+            border-radius: 40px;
+            margin-bottom: 28px;
             display: none;
+            font-weight: 500;
+            text-align: center;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .alert-success {
-            background: #e6f7e6;
-            color: #2e7d32;
-            border: 1px solid #a5d6a5;
+            background: #e2f3e4;
+            color: #1e7b4c;
+            border: 1px solid #b0dec5;
         }
 
         .alert-error {
-            background: #ffebed;
-            color: #c62828;
-            border: 1px solid #ffa4a4;
+            background: #ffe9e9;
+            color: #bc2c2c;
+            border: 1px solid #ffb8b8;
+        }
+
+        /* Pied de page */
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #98aec6;
+            font-size: 0.8rem;
+            border-top: 1px solid #eef4fa;
+            padding-top: 24px;
+        }
+
+        /* Responsive pour petits écrans (Android) */
+        @media (max-width: 500px) {
+            .header {
+                padding: 28px 20px 22px;
+            }
+
+            .logo {
+                font-size: 2.2rem;
+            }
+
+            .form-content {
+                padding: 32px 22px 40px;
+            }
+
+            .title {
+                font-size: 1.8rem;
+            }
+
+            .form-group input {
+                padding: 15px 20px;
+            }
+        }
+
+        /* Pour très petits écrans */
+        @media (max-width: 360px) {
+            .container {
+                border-radius: 36px;
+            }
+
+            .logo {
+                font-size: 2rem;
+            }
+
+            .form-content {
+                padding: 28px 18px 32px;
+            }
+
+            .btn-submit {
+                padding: 16px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- En-tête -->
         <div class="header">
             <div class="logo">NOVA<span>BANK</span></div>
+            <div class="tagline">Votre banque nouvelle génération</div>
         </div>
-        <div class="form-section">
-            <h2>Inscription</h2>
-            <div class="subtitle">Créez votre compte en quelques secondes</div>
-            
+
+        <!-- Corps du formulaire -->
+        <div class="form-content">
+            <h1 class="title">Créer un compte</h1>
+            <div class="subtitle">
+                Rejoignez-nous pour une expérience bancaire simple et moderne
+            </div>
+
+            <!-- Zone de message -->
             <div class="alert" id="alertMessage"></div>
 
-            <form id="registerForm">
+            <!-- Formulaire d'inscription -->
+            <form id="registrationForm" novalidate>
                 <div class="form-group">
-                    <label>Nom complet</label>
-                    <input type="text" id="nom" placeholder="Jean Dupont" required>
+                    <label for="fullname">Nom complet</label>
+                    <input 
+                        type="text" 
+                        id="fullname" 
+                        name="fullname" 
+                        placeholder="ex: Jean Dupont" 
+                        required
+                        autocomplete="name"
+                    >
                 </div>
+
                 <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" id="email" placeholder="jean@email.com" required>
+                    <label for="email">Adresse email</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        placeholder="ex: jean.dupont@email.com" 
+                        required
+                        autocomplete="email"
+                    >
                 </div>
+
                 <div class="form-group">
-                    <label>Mot de passe</label>
-                    <input type="password" id="password" placeholder="Minimum 6 caractères" required>
+                    <label for="password">Mot de passe</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        placeholder="Créez un mot de passe (min. 6 caractères)" 
+                        required
+                        autocomplete="new-password"
+                        minlength="6"
+                    >
+                    <!-- Barre de force du mot de passe -->
+                    <div class="password-strength">
+                        <div class="strength-bar" id="passwordStrengthBar"></div>
+                    </div>
+                    <div class="strength-text" id="passwordStrengthText"></div>
                 </div>
-                <button type="submit" class="btn-submit">CRÉER MON COMPTE</button>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirmer le mot de passe</label>
+                    <input 
+                        type="password" 
+                        id="confirmPassword" 
+                        name="confirmPassword" 
+                        placeholder="Confirmez votre mot de passe" 
+                        required
+                        autocomplete="off"
+                    >
+                </div>
+
+                <button type="submit" class="btn-submit" id="submitBtn">
+                    CRÉER MON COMPTE
+                </button>
             </form>
 
+            <!-- Lien vers connexion -->
             <div class="login-link">
-                Déjà un compte ? <a href="connexion.html">Se connecter</a>
+                Déjà un compte ?
+                <a href="connexion.html">Se connecter</a>
+            </div>
+
+            <!-- Footer -->
+            <div class="footer">
+                © 2026 NOVA BANK. Tous droits réservés.
             </div>
         </div>
     </div>
 
+    <!-- Script Supabase -->
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script>
-        const SUPABASE_URL = 'https://lvbdafzdsuotairqkcnv.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx2YmRhZnpkc3VvdGFpcnFrY252Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEwNTg0MTUsImV4cCI6MjA4NjYzNDQxNX0.MWPo0ZnTNTzK4_8N1GB_mtri7LkgfP43W4gjBGB7zhI';
-        
-        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-        document.getElementById('registerForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
+        (function() {
+            // --- CONFIGURATION (À METTRE À JOUR) ---
+            const SUPABASE_URL = 'https://lvbdafzdsuotairqkcnv.supabase.co';
+            const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx2YmRhZnpkc3VvdGFpcnFrY252Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEwNTg0MTUsImV4cCI6MjA4NjYzNDQxNX0.MWPo0ZnTNTzK4_8N1GB_mtri7LkgfP43W4gjBGB7zhI';
             
-            const nom = document.getElementById('nom').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+            // Initialisation Supabase
+            const { createClient } = supabase;
+            const _supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-            if (password.length < 6) {
-                alert('Mot de passe trop court (6 caractères minimum)');
-                return;
+            // --- ÉLÉMENTS DOM ---
+            const form = document.getElementById('registrationForm');
+            const fullnameInput = document.getElementById('fullname');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const confirmInput = document.getElementById('confirmPassword');
+            const submitBtn = document.getElementById('submitBtn');
+            const alertDiv = document.getElementById('alertMessage');
+            const strengthBar = document.getElementById('passwordStrengthBar');
+            const strengthText = document.getElementById('passwordStrengthText');
+
+            // --- VÉRIFICATION SESSION EXISTANTE ---
+            async function checkExistingSession() {
+                try {
+                    const { data: { user } } = await _supabase.auth.getUser();
+                    if (user) {
+                        window.location.href = 'dashboard.html';
+                    }
+                } catch (error) {
+                    console.warn("Erreur vérification session", error);
+                }
+            }
+            checkExistingSession();
+
+            // --- UTILITAIRES ---
+            function showAlert(message, type) {
+                alertDiv.textContent = message;
+                alertDiv.className = `alert alert-${type}`;
+                alertDiv.style.display = 'block';
+                
+                setTimeout(() => {
+                    alertDiv.style.display = 'none';
+                }, 5000);
             }
 
-            const { data, error } = await supabase.auth.signUp({
-                email, password,
-                options: { data: { nom } }
+            function validateEmail(email) {
+                return String(email)
+                    .toLowerCase()
+                    .match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+            }
+
+            // --- CALCUL FORCE MOT DE PASSE ---
+            function updatePasswordStrength(password) {
+                let strength = 0;
+                if (password.length >= 6) strength += 20;
+                if (password.length >= 8) strength += 20;
+                if (password.match(/[a-z]/)) strength += 20;
+                if (password.match(/[A-Z]/)) strength += 20;
+                if (password.match(/[0-9]/)) strength += 20;
+
+                strengthBar.style.width = strength + '%';
+
+                if (strength <= 20) {
+                    strengthBar.style.background = '#ff6b4a';
+                    strengthText.textContent = 'Très faible';
+                    strengthText.style.color = '#ff6b4a';
+                } else if (strength <= 40) {
+                    strengthBar.style.background = '#ff8c5a';
+                    strengthText.textContent = 'Faible';
+                    strengthText.style.color = '#ff8c5a';
+                } else if (strength <= 60) {
+                    strengthBar.style.background = '#f0b34b';
+                    strengthText.textContent = 'Moyen';
+                    strengthText.style.color = '#f0b34b';
+                } else if (strength <= 80) {
+                    strengthBar.style.background = '#34a853';
+                    strengthText.textContent = 'Bon';
+                    strengthText.style.color = '#34a853';
+                } else {
+                    strengthBar.style.background = '#2d7a4b';
+                    strengthText.textContent = 'Excellent';
+                    strengthText.style.color = '#2d7a4b';
+                }
+            }
+
+            passwordInput.addEventListener('input', (e) => {
+                updatePasswordStrength(e.target.value);
             });
 
-            if (error) {
-                alert(error.message);
-            } else {
-                alert('Compte créé ! Redirection...');
-                setTimeout(() => window.location.href = 'connexion.html', 2000);
-            }
-        });
+            // --- SOUMISSION FORMULAIRE ---
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                // Récupération des valeurs
+                const nom = fullnameInput.value.trim();
+                const email = emailInput.value.trim();
+                const password = passwordInput.value;
+                const confirm = confirmInput.value;
+
+                // --- VALIDATIONS ---
+                if (!nom || !email || !password || !confirm) {
+                    showAlert('Veuillez remplir tous les champs.', 'error');
+                    return;
+                }
+
+                if (!validateEmail(email)) {
+                    showAlert('Adresse email invalide.', 'error');
+                    return;
+                }
+
+                if (password.length < 6) {
+                    showAlert('Le mot de passe doit contenir au moins 6 caractères.', 'error');
+                    return;
+                }
+
+                if (password !== confirm) {
+                    showAlert('Les mots de passe ne correspondent pas.', 'error');
+                    return;
+                }
+
+                // --- APPEL SUPABASE ---
+                try {
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'CRÉATION EN COURS...';
+
+                    const { data, error } = await _supabase.auth.signUp({
+                        email: email,
+                        password: password,
+                        options: {
+                            data: {
+                                nom: nom
+                            }
+                        }
+                    });
+
+                    if (error) {
+                        throw error;
+                    }
+
+                    if (data && data.user) {
+                        showAlert('Compte créé avec succès ! Redirection...', 'success');
+                        
+                        // Attendre un peu puis rediriger vers connexion
+                        setTimeout(() => {
+                            window.location.href = 'connexion.html';
+                        }, 2000);
+                    } else {
+                        throw new Error('Une erreur inattendue est survenue.');
+                    }
+
+                } catch (error) {
+                    console.error('Erreur inscription:', error);
+                    
+                    let message = error.message;
+                    if (error.message.includes('User already registered')) {
+                        message = 'Un compte existe déjà avec cet email.';
+                    } else if (error.message.includes('password')) {
+                        message = 'Le mot de passe doit contenir au moins 6 caractères.';
+                    }
+                    
+                    showAlert(message, 'error');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'CRÉER MON COMPTE';
+                }
+            });
+
+            // Reset du bouton en cas d'erreur réseau (sécurité)
+            window.addEventListener('pageshow', () => {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'CRÉER MON COMPTE';
+            });
+
+        })();
     </script>
 </body>
 </html>
