@@ -4,12 +4,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
 
 private val KontakColorScheme = lightColorScheme(
     primary = KontakGreen,
-    onPrimary = Color_White,
+    onPrimary = Color.White,
     secondary = KontakGreenDark,
     background = KontakBg,
     surface = KontakBg,
@@ -18,8 +19,6 @@ private val KontakColorScheme = lightColorScheme(
     onSurface = KontakInk,
     error = KontakErr,
 )
-
-private val Color_White = androidx.compose.ui.graphics.Color(0xFFFFFFFF)
 
 // Sora (UI/texte courant) est la police du site — en attendant l'intégration
 // des polices custom (Fraunces/Sora/Space Mono) via des fichiers .ttf dans
