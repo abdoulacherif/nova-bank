@@ -25,11 +25,14 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import com.kontak.app.data.ApiResult
 import com.kontak.app.data.AuthRepository
+import com.kontak.app.model.Profile
 import com.kontak.app.model.SessionUser
+import com.kontak.app.ui.screens.CompleteProfileScreen
+import com.kontak.app.ui.screens.DashboardScreen
 import com.kontak.app.ui.theme.KontakTheme
 import kotlinx.coroutines.launch
 
-private enum class AppScreen { LOADING, LOGIN, DASHBOARD }
+private enum class AppScreen { LOADING, LOGIN, COMPLETE_PROFILE, DASHBOARD }
 
 @Composable
 fun App() {
@@ -47,35 +50,61 @@ private fun KontakRoot() {
     var currentUser by remember { mutableStateOf<SessionUser?>(null) }
     val coroutineScope = rememberCoroutineScope()
 
-    LaunchedEffect(Unit) {
+    suspend fun refreshSessionAndRoute() {
         when (val result = authRepository.getSession()) {
             is ApiResult.Success -> {
                 currentUser = result.data
-                screen = if (result.data != null) AppScreen.DASHBOARD else AppScreen.LOGIN
+                screen = when {
+                    result.data == null -> AppScreen.LOGIN
+                    result.data.profile == null -> AppScreen.COMPLETE_PROFILE
+                    else -> AppScreen.DASHBOARD
+                }
             }
             is ApiResult.Error -> screen = AppScreen.LOGIN
         }
     }
 
+    LaunchedEffect(Unit) {
+        refreshSessionAndRoute()
+    }
+
     when (screen) {
         AppScreen.LOADING -> LoadingScreen()
+
         AppScreen.LOGIN -> LoginScreen(
             authRepository = authRepository,
-            onLoginSuccess = { user ->
-                currentUser = user
+            onLoginSuccess = {
+                coroutineScope.launch { refreshSessionAndRoute() }
+            }
+        )
+
+        AppScreen.COMPLETE_PROFILE -> CompleteProfileScreen(
+            onProfileCreated = { profile ->
+                currentUser = currentUser?.copy(profile = profile)
                 screen = AppScreen.DASHBOARD
             }
         )
-        AppScreen.DASHBOARD -> DashboardPlaceholder(
-            user = currentUser,
-            onLogout = {
-                coroutineScope.launch {
-                    authRepository.logout()
-                    currentUser = null
-                    screen = AppScreen.LOGIN
-                }
+
+        AppScreen.DASHBOARD -> {
+            val profile = currentUser?.profile
+            if (profile != null) {
+                DashboardScreen(
+                    profile = profile,
+                    onLogout = {
+                        coroutineScope.launch {
+                            authRepository.logout()
+                            currentUser = null
+                            screen = AppScreen.LOGIN
+                        }
+                    }
+                )
+            } else {
+                // Sécurité : ne devrait pas arriver, mais on repasse par la
+                // vérification de session plutôt que d'afficher un écran vide.
+                LaunchedEffect(Unit) { refreshSessionAndRoute() }
+                LoadingScreen()
             }
-        )
+        }
     }
 }
 
@@ -89,7 +118,7 @@ private fun LoadingScreen() {
 @Composable
 private fun LoginScreen(
     authRepository: AuthRepository,
-    onLoginSuccess: (SessionUser?) -> Unit,
+    onLoginSuccess: () -> Unit,
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -132,13 +161,8 @@ private fun LoginScreen(
                 coroutineScope.launch {
                     when (val result = authRepository.login(email.trim(), password)) {
                         is ApiResult.Success -> {
-                            val sessionResult = authRepository.getSession()
                             isLoading = false
-                            if (sessionResult is ApiResult.Success) {
-                                onLoginSuccess(sessionResult.data)
-                            } else {
-                                onLoginSuccess(null)
-                            }
+                            onLoginSuccess()
                         }
                         is ApiResult.Error -> {
                             isLoading = false
@@ -150,20 +174,6 @@ private fun LoginScreen(
             modifier = Modifier.fillMaxWidth().padding(top = 20.dp),
         ) {
             Text(if (isLoading) "Connexion…" else "Se connecter")
-        }
-    }
-}
-
-@Composable
-private fun DashboardPlaceholder(user: SessionUser?, onLogout: () -> Unit) {
-    Column(
-        modifier = Modifier.fillMaxSize().padding(24.dp),
-        verticalArrangement = Arrangement.Center,
-    ) {
-        Text("Bonjour ${user?.profile?.nom ?: user?.email ?: ""}", style = MaterialTheme.typography.headlineMedium)
-        Text("Crédits : ${user?.profile?.credits ?: 0}", modifier = Modifier.padding(top = 8.dp))
-        Button(onClick = onLogout, modifier = Modifier.padding(top = 24.dp)) {
-            Text("Déconnexion")
         }
     }
 }
