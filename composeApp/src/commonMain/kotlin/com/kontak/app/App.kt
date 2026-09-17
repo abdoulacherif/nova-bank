@@ -27,12 +27,13 @@ import com.kontak.app.data.ApiResult
 import com.kontak.app.data.AuthRepository
 import com.kontak.app.model.Profile
 import com.kontak.app.model.SessionUser
+import com.kontak.app.ui.screens.AbonnementScreen
 import com.kontak.app.ui.screens.CompleteProfileScreen
 import com.kontak.app.ui.screens.DashboardScreen
 import com.kontak.app.ui.theme.KontakTheme
 import kotlinx.coroutines.launch
 
-private enum class AppScreen { LOADING, LOGIN, COMPLETE_PROFILE, DASHBOARD }
+private enum class AppScreen { LOADING, LOGIN, COMPLETE_PROFILE, DASHBOARD, ABONNEMENT }
 
 @Composable
 fun App() {
@@ -96,7 +97,8 @@ private fun KontakRoot() {
                             currentUser = null
                             screen = AppScreen.LOGIN
                         }
-                    }
+                    },
+                    onBuyCredits = { screen = AppScreen.ABONNEMENT },
                 )
             } else {
                 // Sécurité : ne devrait pas arriver, mais on repasse par la
@@ -105,6 +107,13 @@ private fun KontakRoot() {
                 LoadingScreen()
             }
         }
+
+        AppScreen.ABONNEMENT -> AbonnementScreen(
+            onCreditsUpdated = {
+                coroutineScope.launch { refreshSessionAndRoute() }
+            },
+            onBack = { screen = AppScreen.DASHBOARD },
+        )
     }
 }
 
