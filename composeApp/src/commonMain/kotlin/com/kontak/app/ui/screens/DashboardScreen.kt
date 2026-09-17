@@ -44,6 +44,7 @@ import com.kontak.app.ui.theme.KontakOrange
 fun DashboardScreen(
     profile: Profile,
     onLogout: () -> Unit,
+    onBuyCredits: () -> Unit,
 ) {
     val initials = remember(profile) {
         val source = profile.business ?: profile.nom ?: ""
@@ -150,7 +151,7 @@ fun DashboardScreen(
             modifier = Modifier.padding(top = 4.dp, bottom = 12.dp),
         )
         Button(
-            onClick = { /* TODO: naviguer vers l'écran Abonnement (prochain écran à construire) */ },
+            onClick = onBuyCredits,
             colors = ButtonDefaults.buttonColors(containerColor = KontakGreen),
             modifier = Modifier.fillMaxWidth(),
         ) {
